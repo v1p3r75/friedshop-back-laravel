@@ -20,7 +20,6 @@ Route::get('/', function(){
     return response()->json(['api_name' => 'friedshop-back-laravel', 'version' => '1.0', 'author' => 'v1p3r75']);
 });
 
-
 Route::get('products', [ProductController::class, 'index']);
 Route::get('product/{id}', [ProductController::class, 'show'])->whereNumber('id');
 Route::post('product/create', [ProductController::class, 'create']);
