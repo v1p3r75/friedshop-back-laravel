@@ -28,6 +28,7 @@ Route::patch('product/edit', [ProductController::class, 'edit']);
 Route::delete('product/delete', [ProductController::class, 'destroy']);
 
 Route::post('/user/create', [UserController::class, 'register']);
+Route::post('/user/login', [UserController::class, 'login']);
 Route::get('/user/update_token', [UserController::class, 'updateToken']);
 
 

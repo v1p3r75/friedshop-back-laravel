@@ -64,6 +64,34 @@ class UserController extends Controller
 
     }
 
+    public function login(Request $request, User $user) {
+        
+        $validation = validator($request->all(), ['email' => 'required|email', 'password' => 'required']);
+
+        if ($validation->fails()) {
+
+            return ApiResponse::error('Validation failed', $validation->errors()->all());
+        }
+
+        $userExist = $user::where('email', $request->email)->first();
+
+        if ($userExist) {
+            
+            if (Hash::check($request->password, $userExist->password)) {
+
+                return ApiResponse::success('User login successful', ['token' => $userExist->api_token]);
+            }
+
+            return ApiResponse::error('Password is incorrect', ['password' => 'Incorrect password'], 403);
+            
+        }
+
+        return ApiResponse::error('User not found', [] , 404);
+
+        
+    }
+
+
     /**
      * Display the specified resource.
      */
