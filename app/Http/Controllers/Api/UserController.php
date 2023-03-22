@@ -15,7 +15,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        if ($users = User::all()) {
+
+            return ApiResponse::success('List Of Users', $users->toArray());
+        }
+
+        return ApiResponse::error('Error while fetching users', [], 500);
     }
 
     /**

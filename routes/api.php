@@ -27,10 +27,11 @@ Route::post('product/create', [ProductController::class, 'create']);
 Route::patch('product/edit', [ProductController::class, 'edit']);
 Route::delete('product/delete', [ProductController::class, 'destroy']);
 
+Route::get('users', [UserController::class, 'index']);
+Route::get('user/{id}', [UserController::class, 'show']);
 Route::post('user/create', [UserController::class, 'register']);
 Route::post('user/login', [UserController::class, 'login']);
 Route::get('user/update_token', [UserController::class, 'updateToken']);
-Route::get('user/{id}', [UserController::class, 'show']);
 
 
 
