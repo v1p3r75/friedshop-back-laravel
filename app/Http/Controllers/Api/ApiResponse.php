@@ -19,12 +19,12 @@ class ApiResponse
     }
 
 
-    static function error(string $message = '', array $data = [], int $code = 400) {
+    static function error(string $message = '', array $errors = [], int $code = 400) {
 
         $response = [
             'status' => $code,
             'message' => empty($message) ? 'Request failed' : $message,
-            'data' => $data
+            'errors' => $errors
         ];
 
         return response()->json($response);

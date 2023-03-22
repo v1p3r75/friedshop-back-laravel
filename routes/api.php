@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,10 @@ Route::get('product/{id}', [ProductController::class, 'show'])->whereNumber('id'
 Route::post('product/create', [ProductController::class, 'create']);
 Route::patch('product/edit', [ProductController::class, 'edit']);
 Route::delete('product/delete', [ProductController::class, 'destroy']);
+
+Route::post('/user/create', [UserController::class, 'register']);
+Route::get('/user/update_token', [UserController::class, 'updateToken']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
