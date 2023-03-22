@@ -21,17 +21,23 @@ Route::get('/', function(){
     return response()->json(['api_name' => 'friedshop-back-laravel', 'version' => '1.0', 'author' => 'v1p3r75']);
 });
 
-Route::get('products', [ProductController::class, 'index']);
-Route::get('product/{id}', [ProductController::class, 'show'])->whereNumber('id');
-Route::post('product/create', [ProductController::class, 'create']);
-Route::patch('product/edit', [ProductController::class, 'edit']);
-Route::delete('product/delete', [ProductController::class, 'destroy']);
+Route::controller(ProductController::class)->prefix('product')->group(function () {
 
-Route::get('users', [UserController::class, 'index']);
-Route::get('user/{id}', [UserController::class, 'show']);
-Route::post('user/create', [UserController::class, 'register']);
-Route::post('user/login', [UserController::class, 'login']);
-Route::get('user/update_token', [UserController::class, 'updateToken']);
+    Route::get('/', 'index');
+    Route::get('/{id}','show');
+    Route::post('/create', 'create');
+    Route::patch('/edit', 'edit');
+    Route::delete('/delete', 'destroy');
+});
+
+Route::controller(UserController::class)->prefix('user')->group(function () {
+
+    Route::get('/', 'index');
+    Route::get('/{id}','show');
+    Route::post('/create', 'register');
+    Route::patch('/login', 'login');
+    Route::delete('/update_token', 'updateToken');
+});
 
 
 
