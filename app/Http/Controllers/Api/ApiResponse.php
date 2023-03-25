@@ -15,7 +15,7 @@ class ApiResponse
             'data' => $data
         ];
 
-        return response()->json($response);
+        return response()->json($response, $response['status']);
     }
 
 
@@ -27,7 +27,7 @@ class ApiResponse
             'errors' => $errors
         ];
 
-        return response()->json($response);
+        return response()->json($response, $response['status']);
     }
 
 

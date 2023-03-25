@@ -9,8 +9,14 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
+    public function __construct(Request $request) {
+
+        header('Content-Type: application/text');
+    }
 
     public function index() {
+
+        
 
         if (!$all = Product::all()) {
 
@@ -61,7 +67,7 @@ class ProductController extends Controller
         $id = $request->input('product_id');
         $data = $request->except('product_id');
 
-        if(! $product->update([$id, $data])) {
+        if(! $product->updateOrFail([$id, $data])) {
 
             return ApiResponse::error('Product edit failed');
         }
