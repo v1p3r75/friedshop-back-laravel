@@ -9,13 +9,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
-    public function __construct(Request $request) {
-
-        header('Content-Type: application/text');
-    }
-
     public function index() {
-
         
 
         if (!$all = Product::all()) {
@@ -48,16 +42,26 @@ class ProductController extends Controller
         if($validation->fails()) {
            
             return ApiResponse::error('Validation failed', $validation->errors()->all() , 400);
-        } 
-        
-        if (! $product = Product::create($data)) {
-
-            return ApiResponse::error('Product creation failed', [], 402);
-
         }
 
+        $imageName = $data['name'] . '-' . time() . '.' . $request->file('img')->extension();
 
-        return ApiResponse::success('Product created successfully', $data, 200);
+        if($request->file('img')->storeAs('public', $imageName)) {
+
+            $data['img'] = $imageName;
+
+            if (! $product = Product::create($data)) {
+
+        
+                return ApiResponse::error('Product creation failed', [], 500);
+    
+            }
+    
+    
+            return ApiResponse::success('Product created successfully', $data, 201);
+        }
+
+        return ApiResponse::error('Image Upload Error', [], 403);
 
 
     }

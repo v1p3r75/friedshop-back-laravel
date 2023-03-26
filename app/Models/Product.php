@@ -9,7 +9,6 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = "product_id";
 
     protected $fillable = [
         'name','img', 'price', 'desc','reviews', 'old_price', 'reduction'
@@ -21,7 +20,7 @@ class Product extends Model
 
         return [
             'name' => 'required',
-            'img' => 'required|file',
+            'img' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'price' => 'required|numeric',
             'old_price' => 'numeric',
             'reduction' => 'numeric',
