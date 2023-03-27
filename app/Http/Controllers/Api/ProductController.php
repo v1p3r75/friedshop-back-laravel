@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
 
     public function index() {
-        
+
 
         if (!$all = Product::all()) {
 
@@ -18,12 +18,12 @@ class ProductController extends Controller
         }
 
         return ApiResponse::success('List of products', $all->toArray());
-        
+
     }
 
 
     public function show($id = null) {
-        
+
         if($product = Product::find($id)) {
 
             return ApiResponse::success('Product Found', $product->toArray());
@@ -38,9 +38,9 @@ class ProductController extends Controller
         $data = $request->all();
 
         $validation = validator($data, Product::rules());
-        
+
         if($validation->fails()) {
-           
+
             return ApiResponse::error('Validation failed', $validation->errors()->all() , 400);
         }
 
@@ -52,12 +52,12 @@ class ProductController extends Controller
 
             if (! $product = Product::create($data)) {
 
-        
+
                 return ApiResponse::error('Product creation failed', [], 500);
-    
+
             }
-    
-    
+
+
             return ApiResponse::success('Product created successfully', $data, 201);
         }
 
@@ -71,7 +71,7 @@ class ProductController extends Controller
         $id = $request->input('product_id');
         $data = $request->except('product_id');
 
-        if(! $product->updateOrFail([$id, $data])) {
+        if(! $product->update([$id, $data])) {
 
             return ApiResponse::error('Product edit failed');
         }
@@ -82,11 +82,11 @@ class ProductController extends Controller
 
     public function destroy(Request $request) {
 
-        $id = $request->input('product_id');
+        $id = $request->input('id');
 
-        if (! (is_null($id) || empty($id))) {
+        if (! empty($id)) {
 
-            if (Product::deleted($id)) {
+            if (Product::destroy($id)) {
 
                 return ApiResponse::success('Product deleted successfully');
             }
@@ -95,7 +95,7 @@ class ProductController extends Controller
         }
 
         return ApiResponse::error('You must specify a product identifier');
-        
+
     }
 
 }
