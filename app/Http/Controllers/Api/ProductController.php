@@ -50,8 +50,7 @@ class ProductController extends Controller
 
             $data['img'] = $imageName;
 
-            if (! $product = Product::create($data)) {
-
+            if (! Product::create($data)) {
 
                 return ApiResponse::error('Product creation failed', [], 500);
 
@@ -68,15 +67,21 @@ class ProductController extends Controller
 
     public function edit(Request $request, Product $product) {
 
-        $id = $request->input('product_id');
-        $data = $request->except('product_id');
 
-        if(! $product->update([$id, $data])) {
+        $data = $request->except('id');
 
-            return ApiResponse::error('Product edit failed');
+        if ($db_product = $product::find($request->input('id'))) {
+
+            if(! $db_product->update($data)) {
+
+                return ApiResponse::error('Product edit failed', [], );
+            }
+
+            return ApiResponse::success('Product edited successfully', $data);
+
         }
 
-        return ApiResponse::success('Product updated successfully', $data);
+        return ApiResponse::error('Product not found', [], 404);
 
     }
 

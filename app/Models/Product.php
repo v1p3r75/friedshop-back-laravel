@@ -13,10 +13,9 @@ class Product extends Model
     protected $fillable = [
         'name','img', 'price', 'desc','reviews', 'old_price', 'reduction'
     ];
-    
+
 
     static function rules () {
-
 
         return [
             'name' => 'required',
@@ -25,7 +24,8 @@ class Product extends Model
             'old_price' => 'numeric',
             'reduction' => 'numeric',
             'desc' => 'required',
-            'reviews' => 'required|numeric|max:5|min:0'
+            'reviews' => 'required|numeric|max:5|min:0',
+            'total_quantity' => 'required|numeric',
         ];
     }
 

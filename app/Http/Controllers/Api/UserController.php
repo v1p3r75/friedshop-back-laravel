@@ -32,23 +32,23 @@ class UserController extends Controller
         $validation = validator($data, User::rules());
 
         if (! $validation->fails()) {
-            
+
             $data['password'] = Hash::make($data['password']);
-            
+
             $data['api_token'] = Str::random(60);
 
             if(User::create($data)) {
-                
+
                 return ApiResponse::success('User created successfully', $data, 201);
             }
 
             return ApiResponse::error('User creation failed', [], 400);
-        
+
         }
 
         return ApiResponse::error('Validation failed', $validation->errors()->all());
 
-        
+
     }
 
 
@@ -61,7 +61,7 @@ class UserController extends Controller
             $request->user()->forceFill([
                 'api_token' => hash('sha256', $token),
             ])->save();
-    
+
             return ApiResponse::success('Token updated successfully', ['token' => $token]);
         }
 
@@ -70,7 +70,7 @@ class UserController extends Controller
     }
 
     public function login(Request $request, User $user) {
-        
+
         $validation = validator($request->all(), ['email' => 'required|email', 'password' => 'required']);
 
         if ($validation->fails()) {
@@ -81,19 +81,19 @@ class UserController extends Controller
         $userExist = $user::where('email', $request->email)->first();
 
         if ($userExist) {
-            
+
             if (Hash::check($request->password, $userExist->password)) {
 
-                return ApiResponse::success('User login successful', ['token' => $userExist->api_token]);
+                return ApiResponse::success('User login successful', ['users' => $userExist, 'token' => $userExist->createToken('xxx-friedshop-key')]);
             }
 
             return ApiResponse::error('Password is incorrect', ['password' => 'Incorrect password'], 403);
-            
+
         }
 
         return ApiResponse::error('User not found', [] , 404);
 
-        
+
     }
 
 
