@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function(Blueprint $table) {
-            // $table->string('address')->after('password');
             $table->removeColumn('name');
-            // $table->string('firstname')->after('id');
-            // $table->string('lastname')->after('firstname');
-            // $table->string('phone')->before('password');
+            $table->string('address')->after('password');
+            $table->string('firstname')->after('id');
+            $table->string('lastname')->after('firstname');
+            $table->string('phone')->before('password');
+            $table->boolean('admin')->default(0);
         });
     }
 

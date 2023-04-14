@@ -65,12 +65,23 @@ class ProductController extends Controller
 
     }
 
-    public function edit(Request $request, Product $product) {
+    public function edit(Request $request) {
+        
+        
+        $data = $request->except('id', '_method');
 
+        if ($db_product = Product::find($request->input('id'))) {
+            
+            if ($request->input('imageEdited') == "true") {
+                
+                $imageName = $data['name'] . '-' . time() . '.' . $request->file('img')->extension();
 
-        $data = $request->except('id');
+                if($request->file('img')->storeAs('public', $imageName)) {
 
-        if ($db_product = $product::find($request->input('id'))) {
+                    $data['img'] = $imageName;
+                    
+                }
+            } else unset($data['img']);
 
             if(! $db_product->update($data)) {
 
@@ -81,7 +92,7 @@ class ProductController extends Controller
 
         }
 
-        return ApiResponse::error('Product not found', [], 404);
+        return ApiResponse::error('Product not found', [$data], 404);
 
     }
 

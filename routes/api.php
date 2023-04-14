@@ -34,7 +34,7 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}','show');
     Route::post('/create', 'register');
-    Route::patch('/login', 'login');
+    Route::post('/login', 'login');
     Route::delete('/update_token', 'updateToken');
 });
 
