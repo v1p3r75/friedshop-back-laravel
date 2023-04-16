@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,14 @@ Route::get('/', function(){
 });
 
 Route::controller(ProductController::class)->prefix('product')->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}','show')->whereNumber('id');
+    Route::post('/create', 'create');
+    Route::patch('/edit', 'edit');
+    Route::delete('/delete', 'destroy');
+});
+
+Route::controller(CategoryController::class)->prefix('category')->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
     Route::post('/create', 'create');
