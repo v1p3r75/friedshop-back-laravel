@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['email','password', 'firstname', 'lastname', 'address', 'tel', 'api_token'];
+    protected $fillable = ['email','password', 'firstname', 'lastname', 'address', 'phone', 'api_token'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,10 +43,11 @@ class User extends Authenticatable
 
         return [
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required',
             'firstname' => 'required',
             'lastname' => 'required',
-            'tel' => 'required'
+            'phone' => 'required'
         ];
     }
 }

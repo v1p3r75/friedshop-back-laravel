@@ -22,7 +22,7 @@ class ForceJsonResponseMiddleware
 
         if ($response->isServerError()) {
             // Convertir les erreurs en JSON
-            $response = response()->json(['message' => 'Internal Server Error, Please contact Administrator.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = response()->json(['message' => 'Internal Server Error, Please contact Administrator.', 'data' => ['Internal Server Error']], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;

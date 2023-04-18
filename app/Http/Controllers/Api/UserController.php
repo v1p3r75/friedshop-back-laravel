@@ -35,11 +35,11 @@ class UserController extends Controller
 
             $data['password'] = Hash::make($data['password']);
 
-            $data['api_token'] = Str::random(60);
+            //$data['api_token'] = Str::random(60);
 
-            if(User::create($data)) {
+            if($user = User::create($data)) {
 
-                return ApiResponse::success('User created successfully', $data, 201);
+                return ApiResponse::success('User created successfully', [$user, $user->createToken('xxx-friedshop-key')->plainTextToken], 201);
             }
 
             return ApiResponse::error('User creation failed', [], 400);
@@ -84,10 +84,10 @@ class UserController extends Controller
 
             if (Hash::check($request->password, $userExist->password)) {
 
-                return ApiResponse::success('User login successful', ['users' => $userExist, 'token' => $userExist->createToken('xxx-friedshop-key')]);
+                return ApiResponse::success('User login successful', ['users' => $userExist, '_token' => $userExist->createToken(env('AUTH_SECRET_KEY'))->plainTextToken]);
             }
 
-            return ApiResponse::error('Password is incorrect', ['password' => 'Incorrect password'], 403);
+            return ApiResponse::error('Password is incorrect', ['Incorrect password'], 403);
 
         }
 
