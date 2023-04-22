@@ -9,5 +9,5 @@ class SlideShow extends Model
 {
     use HasFactory;
 
-    $table = 'slideshows';
+    protected $table = 'slideshows';
 }
