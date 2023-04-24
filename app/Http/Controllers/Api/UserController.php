@@ -39,7 +39,7 @@ class UserController extends Controller
 
             if($user = User::create($data)) {
 
-                return ApiResponse::success('User created successfully', [$user, $user->createToken('xxx-friedshop-key')->plainTextToken], 201);
+                return ApiResponse::success('User created successfully', [$user, $user->createToken(env('AUTH_SECRET_KEY'))->plainTextToken], 201);
             }
 
             return ApiResponse::error('User creation failed', [], 400);
