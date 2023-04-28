@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $guestOnly = $request->input('guest_only')
+        $guestOnly = $request->input('guest_only');
 
         if ($users = $guestOnly == "true" ? User::where('admin', '0') : User::all()) {
 
@@ -133,8 +133,20 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->input('id');
+
+        if (! empty($id)) {
+
+            if (User::destroy($id)) {
+
+                return ApiResponse::success('User deleted successfully');
+            }
+
+            return ApiResponse::error('Delete failed', []);
+        }
+
+        return ApiResponse::error('You must specify a user identifier');
     }
 }
