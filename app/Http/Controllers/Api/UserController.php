@@ -13,9 +13,11 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        if ($users = User::all()) {
+        $guestOnly = $request->input('guest_only')
+
+        if ($users = $guestOnly == "true" ? User::where('admin', '0') : User::all()) {
 
             return ApiResponse::success('List Of Users', $users->toArray());
         }

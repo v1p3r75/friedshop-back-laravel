@@ -44,9 +44,9 @@ class SlideController extends Controller
             return ApiResponse::error('Validation failed', $validation->errors()->all() , 400);
         }
 
-        $imageName = $data['name'] . '-' . time() . '.' . $request->file('img')->extension();
+        $imageName = $data['text'] . '-' . time() . '.' . $request->file('image')->extension();
 
-        if($request->file('img')->storeAs('public', $imageName)) {
+        if($request->file('image')->storeAs('public', $imageName)) {
 
             $data['image'] = $imageName;
 
@@ -74,14 +74,14 @@ class SlideController extends Controller
             
             if ($request->input('imageEdited') == "true") {
                 
-                $imageName = $data['name'] . '-' . time() . '.' . $request->file('img')->extension();
+                $imageName = $data['text'] . '-' . time() . '.' . $request->file('image')->extension();
 
-                if($request->file('img')->storeAs('public', $imageName)) {
+                if($request->file('image')->storeAs('public', $imageName)) {
 
                     $data['image'] = $imageName;
                     
                 }
-            } else unset($data['img']);
+            } else unset($data['image']);
 
             if(! $db_product->update($data)) {
 
