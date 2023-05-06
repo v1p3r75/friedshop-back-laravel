@@ -48,19 +48,19 @@ class CategoryController extends Controller
             return ApiResponse::error('Category creation failed', [], 500);
 
         }
-        
+
         return ApiResponse::success('Category created successfully', $data, 201);
 
 
     }
 
     public function edit(Request $request) {
-        
-        
+
+
         $data = $request->except('id', '_method');
 
         if ($db_cateogry = Category::find($request->input('id'))) {
-            
+
             if(! $db_cateogry->update($data)) {
 
                 return ApiResponse::error('Category edit failed', [], );

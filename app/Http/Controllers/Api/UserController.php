@@ -41,7 +41,7 @@ class UserController extends Controller
 
             if($user = User::create($data)) {
 
-                return ApiResponse::success('User created successfully', [$user, '_token' => $user->createToken(env('AUTH_SECRET_KEY'))->plainTextToken], 201);
+                return ApiResponse::success('User created successfully', ['user' => $user, '_token' => $user->createToken(env('AUTH_SECRET_KEY'))->plainTextToken], 201);
             }
 
             return ApiResponse::error('User creation failed', [], 400);
@@ -117,9 +117,29 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      */
 
-    public function edit(string $id)
-    {
-        //
+    public function edit(Request $request) {
+
+
+        $data = $request->except('id', '_method', 'admin');
+
+        if ($user = User::find($request->input('id'))) {
+
+            if (isset($data['password'])) {
+
+                $data['password'] = Hash::make($data['password']);
+            }
+
+            if(! $user->update($data)) {
+
+                return ApiResponse::error('User edit failed', [], );
+            }
+
+            return ApiResponse::success('User edited successfully', $data);
+
+        }
+
+        return ApiResponse::error('User not found', [$data], 404);
+
     }
 
     /**

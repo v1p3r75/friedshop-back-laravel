@@ -52,6 +52,7 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}','show');
     Route::post('/create', 'register');
+    Route::patch('edit', 'edit');
     Route::post('/login', 'login');
     Route::post('/update_token', 'updateToken');
     Route::delete('/delete', 'destroy');
