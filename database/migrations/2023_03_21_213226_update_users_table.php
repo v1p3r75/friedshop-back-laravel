@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function(Blueprint $table) {
-            $table->removeColumn('name');
+            // $table->removeColumn('name');
             $table->string('address')->after('password');
             $table->string('firstname')->after('id');
             $table->string('lastname')->after('firstname');

@@ -41,7 +41,7 @@ class UserController extends Controller
 
             if($user = User::create($data)) {
 
-                return ApiResponse::success('User created successfully', [$user, $user->createToken(env('AUTH_SECRET_KEY'))->plainTextToken], 201);
+                return ApiResponse::success('User created successfully', [$user, '_token' => $user->createToken(env('AUTH_SECRET_KEY'))->plainTextToken], 201);
             }
 
             return ApiResponse::error('User creation failed', [], 400);
@@ -67,7 +67,7 @@ class UserController extends Controller
             return ApiResponse::success('Token updated successfully', ['token' => $token]);
         }
 
-        ApiResponse::error('User not logged in', [], 400);
+        return ApiResponse::error('User not logged in', [], 400);
 
     }
 
@@ -86,7 +86,7 @@ class UserController extends Controller
 
             if (Hash::check($request->password, $userExist->password)) {
 
-                return ApiResponse::success('User login successful', ['users' => $userExist, '_token' => $userExist->createToken(env('AUTH_SECRET_KEY'))->plainTextToken]);
+                return ApiResponse::success('User login successful', ['user' => $userExist, '_token' => $userExist->createToken(env('AUTH_SECRET_KEY'))->plainTextToken]);
             }
 
             return ApiResponse::error('Password is incorrect', ['Incorrect password'], 403);
