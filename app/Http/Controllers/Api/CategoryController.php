@@ -25,7 +25,9 @@ class CategoryController extends Controller
 
         if($category = Category::find($id)) {
 
-            return ApiResponse::success('Category Found', $category->toArray());
+            $category = [$category -> toArray(), 'products' => $category->products()];
+
+            return ApiResponse::success('Category Found', $category);
         }
 
         return ApiResponse::error('Category Not Found', [], 404);

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-    
-    
+
+
      protected $fillable = [
         'name','desc'
     ];
@@ -20,5 +20,10 @@ class Category extends Model
         return [
             'name' => 'required|max:20',
         ];
+    }
+
+    public function products() {
+
+        return $this->hasMany(Product::class, 'product_id');
     }
 }
