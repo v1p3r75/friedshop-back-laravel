@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SlideController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\CommandController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,14 @@ Route::controller(SlideController::class)->prefix('slide')->group(function () {
 });
 
 Route::controller(CategoryController::class)->prefix('category')->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}','show')->whereNumber('id');
+    Route::post('/create', 'create');
+    Route::patch('/edit', 'edit');
+    Route::delete('/delete', 'destroy');
+});
+
+Route::controller(CommandController::class)->prefix('command')->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
     Route::post('/create', 'create');
