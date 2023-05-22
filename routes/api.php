@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\CommandController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SlideController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\CommandController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
