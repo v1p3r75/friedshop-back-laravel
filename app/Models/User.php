@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -52,5 +53,12 @@ class User extends Authenticatable
             'lastname' => 'required',
             'phone' => 'required'
         ];
+    }
+
+    public function commands() : BelongsToMany {
+
+        return $this
+            ->belongsToMany(Command::class, 'products_commands')
+            ->withPivot(['quantity', 'product_id']);
     }
 }

@@ -19,4 +19,15 @@ class Command extends Model
         ];
     }
 
+    public function users() {
+
+        return $this->belongsToMany(User::class, 'products_commands');
+    }
+
+    public function products() {
+
+        return $this->belongsToMany(Product::class, 'products_commands');
+
+    }
+
 }

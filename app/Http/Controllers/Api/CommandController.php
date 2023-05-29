@@ -6,22 +6,22 @@ use App\Http\Controllers\Api\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Command;
 use App\Models\ProductsCommands;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CommandController extends Controller
 {
     //
 
-    public function index() {
+    public function show($id) {
 
+        
+        if(! $result = User::findOrFail($id)->commands()) {
 
-        if (!$all = Command::all()) {
-
-            return ApiResponse::error('Error while fetching commands');
+            return ApiResponse::error('Error while fetching commands'); 
         }
-
-        return ApiResponse::success('List of commands', $all->toArray());
+        
+        return ApiResponse::success('List of commands', $result->get()->toArray());
 
     }
 

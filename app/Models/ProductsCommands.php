@@ -21,4 +21,15 @@ class ProductsCommands extends Model
             'command' => 'required|numeric'
         ];
     }
+
+    public function products() {
+
+        return $this->hasMany(Product::class);
+    }
+
+    public function commands() {
+
+        return $this->hasMany(Command::class);
+    }
 }
+
