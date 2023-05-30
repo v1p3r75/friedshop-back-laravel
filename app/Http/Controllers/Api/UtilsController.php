@@ -21,7 +21,7 @@ class UtilsController extends Controller
                 'categories' => Category::count(),
                 'customers' => User::where('admin', '=', 0)->count(),
                 'slides' => SlideShow::count(),
-                'admin' => User::where('admin', '=', 1) -> count(),
+                'admins' => User::where('admin', '=', 1) -> count(),
             ];
 
             return ApiResponse::success('Startistic', $data);
