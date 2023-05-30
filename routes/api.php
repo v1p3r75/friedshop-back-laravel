@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SlideController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\UtilsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -66,6 +67,8 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
     Route::post('/update_token', 'updateToken');
     Route::delete('/delete', 'destroy');
 });
+
+Route::get('/statistics', [UtilsController::class, 'index']);
 
 
 
