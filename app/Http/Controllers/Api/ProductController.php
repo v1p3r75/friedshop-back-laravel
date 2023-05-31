@@ -96,6 +96,16 @@ class ProductController extends Controller
 
     }
 
+    public function search($query) {
+
+        if ($result = Product::where('name','LIKE', "%$query%")->get()) {
+
+            return ApiResponse::success('Product found', $result->toArray());
+        }
+
+        return ApiResponse::error(message: 'Error searching', code: 500);
+    }
+
     public function destroy(Request $request) {
 
         $id = $request->input('id');

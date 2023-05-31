@@ -28,6 +28,7 @@ Route::get('/', function(){
 Route::controller(ProductController::class)->prefix('product')->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
+    Route::get('/search/{query}','search');
     Route::post('/create', 'create');
     Route::patch('/edit', 'edit');
     Route::delete('/delete', 'destroy');
