@@ -32,6 +32,19 @@ class ProductController extends Controller
         return ApiResponse::error('Product Not Found', [], 404);
     }
 
+    
+    public function types($type) {
+        switch ($type) {
+
+            case 'random': {
+                return ApiResponse::success(data: Product::all()->random(1)->toArray());
+            }
+
+            default: return ApiResponse::error(code: 500);
+        }
+
+    }
+
 
     public function create(Request $request) {
 

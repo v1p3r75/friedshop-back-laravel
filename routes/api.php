@@ -29,6 +29,7 @@ Route::controller(ProductController::class)->prefix('product')->group(function (
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
     Route::get('/search/{query}','search');
+    Route::get('/types/{type}','types');
     Route::post('/create', 'create');
     Route::patch('/edit', 'edit');
     Route::delete('/delete', 'destroy');
@@ -69,7 +70,10 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
     Route::delete('/delete', 'destroy');
 });
 
-Route::get('/statistics', [UtilsController::class, 'index']);
+Route::controller(UtilsController::class)->group(function() {
+    Route::get('/statistics', 'index');
+});
+
 
 
 
