@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductsCommands;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -37,10 +38,27 @@ class ProductController extends Controller
         switch ($type) {
 
             case 'random': {
+
                 return ApiResponse::success(data: Product::all()->random(1)->toArray());
             }
 
-            default: return ApiResponse::error(code: 500);
+            case 'best-sellers': {
+
+                $sales = new ProductsCommands();
+
+                return ApiResponse::success(
+                    data: $sales->with('products')
+                        ->select("product_id")
+                        ->selectRaw("sum(quantity) as total_quantity")
+                        ->groupBy("product_id")
+                        ->orderBy("total_quantity", "DESC")
+                        ->limit(5)
+                        ->get()
+                        ->toArray()
+                );
+            }
+
+            default: return abort(404);
         }
 
     }
