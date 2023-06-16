@@ -10,8 +10,4 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    static function Response($code = 200, $message = "") {
-
-        return json_encode(['status' => 200, 'message' => $message]);
-    }
 }
