@@ -17,6 +17,7 @@ class UtilsController extends Controller
         try {
 
             $data = [
+                
                 'products' => Product::count(),
                 'categories' => Category::count(),
                 'customers' => User::where('admin', '=', 0)->count(),
@@ -28,7 +29,7 @@ class UtilsController extends Controller
 
         }catch (\Exception $e) {
 
-            return ApiResponse::error(message: 'Something went wrong', code: 500);
+            return ApiResponse::error(message: 'Something went wrong. Please try again !', code: 500);
         }
 
     }
