@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function(){
 
-    return response()->json(['api_name' => 'friedshop-back-laravel', 'version' => '1.0', 'author' => 'v1p3r75']);
+    return response()->json(['name' => 'friedshop-back-laravel', 'version' => '1.0', 'author' => 'v1p3r75', 'docs' => 'elfriedv16@gmail.com']);
 });
 
 Route::controller(ProductController::class)->prefix('product')->group(function () {
