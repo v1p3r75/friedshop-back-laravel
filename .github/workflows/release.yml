@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  laravel-tests:
+  web-deployment:
 
     runs-on: ubuntu-latest
 
