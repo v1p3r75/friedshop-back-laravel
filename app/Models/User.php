@@ -43,22 +43,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    static function rules() {
-
-        return [
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
-            'password_confirmation' => 'required',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'phone' => 'required'
-        ];
-    }
-
     public function commands() : BelongsToMany {
 
         return $this
             ->belongsToMany(Command::class, 'products_commands')
             ->withPivot(['quantity', 'product_id']);
+    }
+
+    public function isAdmin(): bool {
+
+        return (bool) $this->admin;
     }
 }

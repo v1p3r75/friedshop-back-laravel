@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SlideController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\UtilsController;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,16 +27,18 @@ Route::get('/', function(){
 });
 
 Route::controller(ProductController::class)->prefix('product')->group(function () {
+
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
     Route::get('/search/{query}','search');
     Route::get('/types/{type}','types');
-    Route::post('/create', 'create');
-    Route::patch('/edit', 'edit');
-    Route::delete('/delete', 'destroy');
+    Route::post('/create', 'create')->can('create', Product::class);
+    Route::patch('/edit', 'edit')->can('update', Product::class);
+    Route::delete('/delete', 'destroy')->can('delete', Product::class);
 });
 
 Route::controller(SlideController::class)->prefix('slide')->group(function () {
+
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
     Route::post('/create', 'create');
@@ -44,6 +47,7 @@ Route::controller(SlideController::class)->prefix('slide')->group(function () {
 });
 
 Route::controller(CategoryController::class)->prefix('category')->group(function () {
+
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
     Route::post('/create', 'create');
@@ -74,6 +78,6 @@ Route::controller(UtilsController::class)->group(function() {
     Route::get('/statistics', 'index');
 });
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});

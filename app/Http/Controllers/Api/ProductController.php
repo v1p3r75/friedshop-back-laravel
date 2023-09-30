@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Products\CreateProductRequest;
 use App\Models\Product;
 use App\Models\ProductsCommands;
 use Illuminate\Http\Request;
@@ -64,16 +65,16 @@ class ProductController extends Controller
     }
 
 
-    public function create(Request $request) {
+    public function create(CreateProductRequest $request) {
 
         $data = $request->all();
 
-        $validation = validator($data, Product::rules());
+        // $validation = validator($data, Product::rules());
 
-        if($validation->fails()) {
+        // if($validation->fails()) {
 
-            return ApiResponse::error('Validation failed', $validation->errors()->all() , 400);
-        }
+        //     return ApiResponse::error('Validation failed', $validation->errors()->all() , 400);
+        // }
 
         $imageName = $data['name'] . '-' . time() . '.' . $request->file('img')->extension();
 

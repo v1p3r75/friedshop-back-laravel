@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -28,72 +30,57 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
         $data = $request->all();
-        $validation = validator($data, User::rules());
+                
+        $data['password'] = Hash::make($data['password']);
+        
+        $user = User::create($data);
+        
+        if($user) {
 
-        if (! $validation->fails()) {
+            return ApiResponse::success('User created successfully.', [
 
-            $data['password'] = Hash::make($data['password']);
+                'user' => $user,
+                '_token' => $user->createToken(env('AUTH_SECRET_KEY'))->plainTextToken
 
-            //$data['api_token'] = Str::random(60);
-
-            if($user = User::create($data)) {
-
-                return ApiResponse::success('User created successfully', ['user' => $user, '_token' => $user->createToken(env('AUTH_SECRET_KEY'))->plainTextToken], 201);
-            }
-
-            return ApiResponse::error('User creation failed', [], 400);
-
+            ], 201);
         }
 
-        return ApiResponse::error('Validation failed', $validation->errors()->all());
+        
+        return ApiResponse::error('User creation failed', [], 400);
+
 
 
     }
 
+    public function login(Request $request) {
 
-    public function updateToken(Request $request) {
+        $credentials = $request->only(['email', 'password']);
 
-        if ($request->user()) {
-
-            $token = Str::random(60);
-
-            $request->user()->forceFill([
-                'api_token' => hash('sha256', $token),
-            ])->save();
-
-            return ApiResponse::success('Token updated successfully', ['token' => $token]);
-        }
-
-        return ApiResponse::error('User not logged in', [], 400);
-
-    }
-
-    public function login(Request $request, User $user) {
-
-        $validation = validator($request->all(), ['email' => 'required|email', 'password' => 'required']);
+        $validation = validator($credentials, ['email' => 'required|email', 'password' => 'required']);
 
         if ($validation->fails()) {
 
             return ApiResponse::error('Validation failed', $validation->errors()->all());
         }
 
-        $userExist = $user::where('email', $request->email)->first();
 
-        if ($userExist) {
+        if (! Auth::attempt($credentials)) {
 
-            if (Hash::check($request->password, $userExist->password)) {
-
-                return ApiResponse::success('User login successful', ['user' => $userExist, '_token' => $userExist->createToken(env('AUTH_SECRET_KEY'))->plainTextToken]);
-            }
-
-            return ApiResponse::error('Password is incorrect', ['Incorrect password'], 403);
+            return ApiResponse::error('Login error', [], 403);
 
         }
 
-        return ApiResponse::error('User not found', [] , 404);
+        if ($user = User::where('email', $request->email)->first()) {
+
+            return ApiResponse::success('User login successful',
+            ['user' => $user, '_token' => $user->createToken(env('AUTH_SECRET_KEY'))->plainTextToken]);
+
+        }
+        
+        return ApiResponse::error('Login error', [], 403);
 
 
     }
