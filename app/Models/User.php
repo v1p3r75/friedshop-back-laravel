@@ -50,8 +50,8 @@ class User extends Authenticatable
             ->withPivot(['quantity', 'product_id']);
     }
 
-    public function isAdmin(): bool {
+    static function isAdmin(?User $user): bool {
 
-        return (bool) $this->admin;
+        return $user?->admin == 1;
     }
 }

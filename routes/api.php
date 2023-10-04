@@ -32,46 +32,46 @@ Route::controller(ProductController::class)->prefix('product')->group(function (
     Route::get('/{id}','show')->whereNumber('id');
     Route::get('/search/{query}','search');
     Route::get('/types/{type}','types');
-    Route::post('/create', 'create')->can('create', Product::class);
-    Route::patch('/edit', 'edit')->can('update', Product::class);
-    Route::delete('/delete', 'destroy')->can('delete', Product::class);
+    Route::post('/create', 'create');
+    Route::patch('/edit', 'edit')->middleware('must_admin');
+    Route::delete('/delete', 'destroy')->middleware('must_admin');
 });
 
 Route::controller(SlideController::class)->prefix('slide')->group(function () {
 
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
-    Route::post('/create', 'create');
-    Route::patch('/edit', 'edit');
-    Route::delete('/delete', 'destroy');
+    Route::post('/create', 'create')->middleware('must_admin');
+    Route::patch('/edit', 'edit')->middleware('must_admin');
+    Route::delete('/delete', 'destroy')->middleware('must_admin');
 });
 
 Route::controller(CategoryController::class)->prefix('category')->group(function () {
 
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
-    Route::post('/create', 'create');
-    Route::patch('/edit', 'edit');
-    Route::delete('/delete', 'destroy');
+    Route::post('/create', 'create')->middleware('must_admin');
+    Route::patch('/edit', 'edit')->middleware('must_admin');
+    Route::delete('/delete', 'destroy')->middleware('must_admin');
 });
 
 Route::controller(CommandController::class)->prefix('command')->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}','show')->whereNumber('id');
-    Route::post('/create', 'create');
-    Route::patch('/edit', 'edit');
-    Route::delete('/delete', 'destroy');
+    Route::post('/create', 'create')->middleware('must_admin');
+    Route::patch('/edit', 'edit')->middleware('must_admin');
+    Route::delete('/delete', 'destroy')->middleware('must_admin');
 });
 
 Route::controller(UserController::class)->prefix('user')->group(function () {
 
-    Route::get('/', 'index');
-    Route::get('/{id}','show');
+    Route::get('/', 'index')->middleware('must_admin');
+    Route::get('/{id}','show')->middleware('auth:sanctum');
     Route::post('/create', 'register');
-    Route::patch('edit', 'edit');
+    Route::patch('edit', 'edit')->middleware('auth:sanctum');
     Route::post('/login', 'login');
     Route::post('/update_token', 'updateToken');
-    Route::delete('/delete', 'destroy');
+    Route::delete('/delete', 'destroy')->middleware('must_admin');
 });
 
 Route::controller(UtilsController::class)->group(function() {

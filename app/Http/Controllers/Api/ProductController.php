@@ -4,12 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\CreateProductRequest;
+use App\Http\Requests\Products\EditProductRequest;
 use App\Models\Product;
 use App\Models\ProductsCommands;
+use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+
+    // public function __construct(Request $request) {
+
+    //     $this->authorizeResource(Product::class);
+    // }
 
     public function index() {
 
@@ -98,8 +106,7 @@ class ProductController extends Controller
     }
 
     public function edit(Request $request) {
-        
-        
+                
         $data = $request->except('id', '_method');
 
         if ($db_product = Product::find($request->input('id'))) {
