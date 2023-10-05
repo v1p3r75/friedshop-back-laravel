@@ -89,8 +89,12 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id = null)
+    public function show(Request $request, string $id = null)
     {
+        $user = $request->user('sanctum');
+
+        if ($user && !$user->admin && $user->id != $id) return Response('Forbidden', 403);
+
         if ($user = User::find($id)) {
 
             return ApiResponse::success('User found', $user->toArray());
@@ -108,6 +112,10 @@ class UserController extends Controller
 
 
         $data = $request->except('id', '_method', 'admin');
+
+        $user = $request->user('sanctum');
+
+        if ($user && !$user->admin && $user->id != $request->input('id')) return Response('Forbidden', 403);
 
         if ($user = User::find($request->input('id'))) {
 
